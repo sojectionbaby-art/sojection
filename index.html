@@ -1,0 +1,1992 @@
+<html lang="vi" class="h-full bg-slate-950">
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>sojectmoney - Nền tảng đầu tư tài chính thông minh</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Lexend', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#10b981', // emerald-500
+                            600: '#059669',
+                            700: '#047857',
+                            950: '#022c22',
+                        },
+                        gold: {
+                            400: '#fbbf24', // amber-400
+                            500: '#f59e0b',
+                        }
+                    },
+                    boxShadow: {
+                        'neon-emerald': '0 0 15px rgba(16, 185, 129, 0.4)',
+                        'neon-gold': '0 0 15px rgba(245, 158, 11, 0.4)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for premium feel */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #020617;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #10b981;
+        }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .glow-border-emerald:hover {
+            border-color: rgba(16, 185, 129, 0.5);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+        }
+    </style>
+</head>
+<body class="h-full text-slate-100 font-sans flex flex-col selection:bg-brand-500 selection:text-slate-950 overflow-hidden">
+
+    <!-- AUTH CONTAINER (Login & Registration Screen) -->
+    <div id="auth-container" class="fixed inset-0 bg-slate-950/95 z-50 flex items-center justify-center p-4 overflow-y-auto">
+        <div class="glass-panel w-full max-w-md rounded-2xl p-6 sm:p-8 space-y-6 shadow-2xl relative border border-slate-800">
+            <!-- Brand Logo inside Auth -->
+            <div class="text-center space-y-2">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-brand-600 to-emerald-400 flex items-center justify-center shadow-lg shadow-brand-500/20 mx-auto">
+                    <i class="fa-solid fa-coins text-slate-950 text-2xl font-bold animate-pulse"></i>
+                </div>
+                <h1 class="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-400 to-amber-300 bg-clip-text text-transparent">sojectmoney</h1>
+                <p class="text-xs text-slate-400">Hệ thống đầu tư tài chính thông minh bảo mật 3 lớp</p>
+            </div>
+
+            <!-- Tab Buttons for Auth Mode -->
+            <div class="flex bg-slate-900/80 p-1 rounded-xl border border-slate-800">
+                <button onclick="toggleAuthMode('login')" id="auth-tab-login" class="flex-1 py-2.5 rounded-lg text-xs font-bold transition bg-emerald-500 text-slate-950">Đăng Nhập</button>
+                <button onclick="toggleAuthMode('register')" id="auth-tab-register" class="flex-1 py-2.5 rounded-lg text-xs font-bold transition text-slate-400">Đăng Ký Mới</button>
+            </div>
+
+            <!-- FORM ĐĂNG NHẬP (LOGIN FORM) -->
+            <form id="form-login" onsubmit="handleLogin(event)" class="space-y-4">
+                <div class="space-y-1.5">
+                    <label class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Số điện thoại:</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"><i class="fa-solid fa-phone"></i></span>
+                        <input id="login-phone" type="tel" required placeholder="Nhập số điện thoại đăng nhập..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 pl-11 text-slate-100 text-sm font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Mật khẩu:</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"><i class="fa-solid fa-lock"></i></span>
+                        <input id="login-pass" type="password" required placeholder="Nhập mật khẩu..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 pl-11 text-slate-100 text-sm font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-brand-500 to-emerald-400 text-slate-950 hover:from-brand-600 hover:to-emerald-500 font-extrabold text-sm tracking-wide transition shadow-lg shadow-emerald-500/10">
+                    ĐĂNG NHẬP NGAY
+                </button>
+            </form>
+
+            <!-- FORM ĐĂNG KÝ (REGISTER FORM) -->
+            <form id="form-register" onsubmit="handleRegister(event)" class="space-y-4 hidden">
+                <div class="space-y-1.5">
+                    <label class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Số điện thoại:</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"><i class="fa-solid fa-phone"></i></span>
+                        <input id="reg-phone" type="tel" required placeholder="Nhập số điện thoại mới..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 pl-11 text-slate-100 text-sm font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Mật khẩu mới (tối thiểu 3 ký tự):</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"><i class="fa-solid fa-lock"></i></span>
+                        <input id="reg-pass" type="password" required placeholder="Tạo mật khẩu an toàn..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 pl-11 text-slate-100 text-sm font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Nhập lại mật khẩu:</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"><i class="fa-solid fa-shield"></i></span>
+                        <input id="reg-pass-confirm" type="password" required placeholder="Nhập lại mật khẩu bảo vệ..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 pl-11 text-slate-100 text-sm font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Mã giới thiệu (SĐT Ref - Không bắt buộc):</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"><i class="fa-solid fa-user-plus"></i></span>
+                        <input id="reg-ref-code" type="text" placeholder="Nhập số điện thoại người giới thiệu..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 pl-11 text-slate-100 text-sm font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="p-3 bg-brand-500/10 border border-brand-500/20 text-brand-400 rounded-lg text-center text-xs font-semibold">
+                    🎁 Nhận ngay 25,000đ Quà Tặng Đăng Ký vào ví sau khi tạo thành công!
+                </div>
+
+                <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-slate-950 font-extrabold text-sm tracking-wide transition shadow-lg shadow-emerald-500/10">
+                    XÁC NHẬN ĐĂNG KÝ
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAIN CONTAINER (Wrapped in a single container for auth control) -->
+    <div id="main-app-container" class="flex-1 flex flex-col md:flex-row h-full overflow-hidden hidden">
+        
+        <!-- Sidebar Navigation (Desktop) / Header (Mobile) -->
+        <aside class="w-full md:w-64 bg-slate-900 border-b md:border-b-0 md:border-r border-slate-800 flex flex-col justify-between z-30">
+            <div>
+                <!-- Brand Header -->
+                <div class="p-5 flex items-center justify-between border-b border-slate-800 bg-slate-950/50">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-emerald-400 flex items-center justify-center shadow-lg shadow-brand-500/20">
+                            <i class="fa-solid fa-coins text-slate-950 text-xl font-bold animate-pulse"></i>
+                        </div>
+                        <div>
+                            <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-400 to-amber-300 bg-clip-text text-transparent">sojectmoney</span>
+                            <div class="flex items-center space-x-1.5">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                                <span class="text-[10px] text-emerald-400 uppercase font-semibold tracking-wider">Hệ thống Live v4.6</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Role Switcher (Admin / User Quick Toggle) -->
+                    <button onclick="toggleAdminPanel()" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-amber-500/20 text-amber-400 text-xs font-semibold flex items-center space-x-1 border border-amber-500/30 transition-all duration-300">
+                        <i class="fa-solid fa-user-shield"></i>
+                        <span class="hidden sm:inline">Admin Panel</span>
+                    </button>
+                </div>
+
+                <!-- User Mini Card & Balance Summary -->
+                <div class="p-4 bg-slate-900/50 border-b border-slate-800/80">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-emerald-400 border border-slate-700">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-slate-400">Tài khoản thành viên</p>
+                                <p id="nav-user-phone" class="text-sm font-bold text-slate-200">0987 *** 456</p>
+                            </div>
+                        </div>
+                        <!-- Logout Trigger -->
+                        <button onclick="handleLogout()" title="Đăng xuất khỏi hệ thống" class="text-xs text-rose-400 hover:text-rose-300 transition-colors p-1 flex items-center space-x-1">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            <span class="hidden md:inline">Đăng xuất</span>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 mt-3 pt-2 border-t border-slate-800/40 text-center">
+                        <div>
+                            <span class="text-[10px] text-slate-400 block">Số dư chính</span>
+                            <span id="nav-main-balance" class="text-sm font-bold text-emerald-400">25,000đ</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-slate-400 block">Gói hoạt động</span>
+                            <span id="nav-active-count" class="text-sm font-bold text-amber-400">0 gói</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nav Items (Responsive Layout Links) -->
+                <nav class="p-3 space-y-1 hidden md:block">
+                    <button onclick="switchTab('dashboard')" class="tab-btn w-full px-4 py-3 rounded-xl flex items-center space-x-3 text-sm font-semibold transition-all bg-slate-800 text-emerald-400" data-tab="dashboard">
+                        <i class="fa-solid fa-chart-line text-lg w-5"></i>
+                        <span>Bàn Làm Việc</span>
+                    </button>
+                    <button onclick="switchTab('deposit')" class="tab-btn w-full px-4 py-3 rounded-xl flex items-center space-x-3 text-sm font-semibold transition-all text-slate-400 hover:bg-slate-800/50 hover:text-slate-100" data-tab="deposit">
+                        <i class="fa-solid fa-wallet text-lg w-5"></i>
+                        <span>Nạp Tiền Vào Vốn</span>
+                    </button>
+                    <button onclick="switchTab('withdraw')" class="tab-btn w-full px-4 py-3 rounded-xl flex items-center space-x-3 text-sm font-semibold transition-all text-slate-400 hover:bg-slate-800/50 hover:text-slate-100" data-tab="withdraw">
+                        <i class="fa-solid fa-money-bill-transfer text-lg w-5"></i>
+                        <span>Rút Vốn & Lãi</span>
+                    </button>
+                    <button onclick="switchTab('referral')" class="tab-btn w-full px-4 py-3 rounded-xl flex items-center space-x-3 text-sm font-semibold transition-all text-slate-400 hover:bg-slate-800/50 hover:text-slate-100" data-tab="referral">
+                        <i class="fa-solid fa-users text-lg w-5"></i>
+                        <span>Hệ Thống 3 Tầng</span>
+                    </button>
+                    <button onclick="switchTab('profile')" class="tab-btn w-full px-4 py-3 rounded-xl flex items-center space-x-3 text-sm font-semibold transition-all text-slate-400 hover:bg-slate-800/50 hover:text-slate-100" data-tab="profile">
+                        <i class="fa-solid fa-id-card text-lg w-5"></i>
+                        <span>Liên Kết Ngân Hàng</span>
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Footer Demo controls in Sidebar -->
+            <div class="p-4 border-t border-slate-800 hidden md:block bg-slate-950/20">
+                <button onclick="simulateDayPassed()" class="w-full py-2 px-3 rounded-lg bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 hover:from-amber-400 hover:to-yellow-300 transition text-xs font-bold flex items-center justify-center space-x-1.5 shadow-lg shadow-amber-500/10">
+                    <i class="fa-solid fa-bolt animate-bounce"></i>
+                    <span>Tua nhanh 24 Giờ (Thử Lãi)</span>
+                </button>
+                <p class="text-[9px] text-slate-500 mt-2 text-center">Bấm để cộng lãi tức thì cho các gói đang chạy của bạn.</p>
+            </div>
+        </aside>
+
+        <!-- Content Area -->
+        <main class="flex-1 flex flex-col h-full overflow-y-auto bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 pb-20 md:pb-0">
+            
+            <!-- Quick Floating Marquee for social proof -->
+            <div class="bg-emerald-950/30 border-b border-emerald-900/30 px-4 py-1.5 text-xs text-emerald-400 overflow-hidden relative flex items-center">
+                <i class="fa-solid fa-bell mr-2 text-emerald-400"></i>
+                <div class="whitespace-nowrap overflow-hidden relative w-full">
+                    <div id="scrolling-notification" class="inline-block pl-[100%] animate-[marquee_25s_linear_infinite]">
+                        Khách hàng 0964***344 vừa rút thành công 180.000đ từ Gói Bạc • Khách hàng 0382***102 vừa kích hoạt Gói Kim Cương • Khách hàng 0912***558 nhận hoa hồng F1 là 56.000đ • Khách hàng 0834***992 vừa rút thành công 500.000đ...
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                @keyframes marquee {
+                    0% { transform: translate3d(0, 0, 0); }
+                    100% { transform: translate3d(-100%, 0, 0); }
+                }
+            </style>
+
+            <!-- TAB 1: DASHBOARD -->
+            <section id="tab-dashboard" class="tab-content p-4 md:p-8 space-y-6">
+                <!-- Welcome Banner -->
+                <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 border border-emerald-900/30 p-6 md:p-8">
+                    <div class="absolute -right-10 -bottom-10 w-44 h-44 bg-brand-500 rounded-full blur-3xl opacity-10"></div>
+                    <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <h2 class="text-2xl md:text-3xl font-extrabold text-white">Chào mừng bạn quay lại!</h2>
+                            <p class="text-sm text-slate-300 mt-1">Sở hữu những danh mục đầu tư an toàn và hiệu quả với dòng tiền thụ động ổn định từ <span class="text-emerald-400 font-bold">sojectmoney</span>.</p>
+                            
+                            <!-- Notice badge for the bonus -->
+                            <div class="inline-flex items-center space-x-2 mt-4 px-3 py-1.5 bg-brand-500/10 border border-brand-500/20 text-brand-400 text-xs font-semibold rounded-lg">
+                                <i class="fa-solid fa-gift"></i>
+                                <span>Nhận quà đăng ký 25k miễn phí (Đã cộng vào Tài khoản phụ)</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <button onclick="switchTab('deposit')" class="px-5 py-3 rounded-xl bg-gradient-to-r from-brand-500 to-emerald-400 hover:from-brand-600 hover:to-emerald-500 text-slate-950 font-bold text-sm text-center shadow-lg shadow-brand-500/25 transition duration-300">
+                                <i class="fa-solid fa-plus mr-1.5"></i>Nạp Tiền Vào Vốn
+                            </button>
+                            <button onclick="switchTab('withdraw')" class="px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700/60 font-bold text-sm text-center transition duration-300">
+                                <i class="fa-solid fa-receipt mr-1.5"></i>Rút Lợi Nhuận
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Finance Dashboard Cards Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Card 1: Main Balance -->
+                    <div class="glass-panel rounded-2xl p-5 relative overflow-hidden group">
+                        <div class="absolute right-4 top-4 w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition duration-300">
+                            <i class="fa-solid fa-vault text-xl"></i>
+                        </div>
+                        <span class="text-xs text-slate-400 font-medium">Số Dư Khả Dụng (Rút)</span>
+                        <div class="flex items-baseline mt-2">
+                            <span id="stat-main-balance" class="text-3xl font-extrabold text-transparent bg-gradient-to-r from-white via-emerald-200 to-emerald-400 bg-clip-text">25,000</span>
+                            <span class="text-xs text-emerald-400 font-bold ml-1">VND</span>
+                        </div>
+                        <p class="text-[11px] text-slate-500 mt-2 flex items-center">
+                            <i class="fa-solid fa-circle-info mr-1 text-slate-500"></i>
+                            Gồm 25k quà tặng & lãi tích lũy.
+                        </p>
+                    </div>
+
+                    <!-- Card 2: Promo Balance / Locked Balance -->
+                    <div class="glass-panel rounded-2xl p-5 relative overflow-hidden group">
+                        <div class="absolute right-4 top-4 w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400 group-hover:scale-110 transition duration-300">
+                            <i class="fa-solid fa-gift text-xl"></i>
+                        </div>
+                        <span class="text-xs text-slate-400 font-medium">Tổng Tiền Thưởng Quà</span>
+                        <div class="flex items-baseline mt-2">
+                            <span id="stat-promo-balance" class="text-3xl font-extrabold text-amber-400">25,000</span>
+                            <span class="text-xs text-amber-400 font-bold ml-1">VND</span>
+                        </div>
+                        <p class="text-[11px] text-amber-500/80 mt-2 flex items-center font-medium">
+                            <i class="fa-solid fa-circle-exclamation mr-1"></i>
+                            Rút tự do khi có ít nhất 1 gói đầu tư.
+                        </p>
+                    </div>
+
+                    <!-- Card 3: Total Investment -->
+                    <div class="glass-panel rounded-2xl p-5 relative overflow-hidden group">
+                        <div class="absolute right-4 top-4 w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover:scale-110 transition duration-300">
+                            <i class="fa-solid fa-circle-dollar-to-slot text-xl"></i>
+                        </div>
+                        <span class="text-xs text-slate-400 font-medium">Vốn Đầu Tư Hiện Tại</span>
+                        <div class="flex items-baseline mt-2">
+                            <span id="stat-invested-balance" class="text-3xl font-extrabold text-white">0</span>
+                            <span class="text-xs text-blue-400 font-bold ml-1">VND</span>
+                        </div>
+                        <p class="text-[11px] text-slate-500 mt-2 flex items-center">
+                            <i class="fa-solid fa-network-wired mr-1"></i>
+                            Tổng giá trị các gói đang sinh lãi.
+                        </p>
+                    </div>
+
+                    <!-- Card 4: Accumulated Profit -->
+                    <div class="glass-panel rounded-2xl p-5 relative overflow-hidden group">
+                        <div class="absolute right-4 top-4 w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-400 group-hover:scale-110 transition duration-300">
+                            <i class="fa-solid fa-chart-pie text-xl"></i>
+                        </div>
+                        <span class="text-xs text-slate-400 font-medium">Tổng Lợi Nhuận Đã Thu</span>
+                        <div class="flex items-baseline mt-2">
+                            <span id="stat-earned-balance" class="text-3xl font-extrabold text-emerald-400">0</span>
+                            <span class="text-xs text-purple-400 font-bold ml-1">VND</span>
+                        </div>
+                        <p class="text-[11px] text-emerald-400/80 mt-2 flex items-center font-medium">
+                            <i class="fa-solid fa-circle-check mr-1"></i>
+                            Đã cộng trực tiếp vào Số Dư.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Investment Packages Section -->
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-xl font-bold text-white flex items-center">
+                                <span class="w-2.5 h-6 rounded-r bg-emerald-500 mr-2"></span>
+                                Các Gói Đầu Tư Sinh Lời Hàng Ngày
+                            </h3>
+                            <p class="text-xs text-slate-400 mt-0.5">Vốn ổn định - Lãi suất cực cao - Nhận tiền mỗi ngày</p>
+                        </div>
+                        <!-- Demo trigger helper on mobile -->
+                        <div class="block md:hidden">
+                            <button onclick="simulateDayPassed()" class="p-2 rounded-lg bg-amber-500 text-slate-950 font-bold text-xs flex items-center space-x-1 shadow-lg shadow-amber-500/10">
+                                <i class="fa-solid fa-bolt"></i><span>Tua 24h</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+                        <!-- PACKAGE 1 -->
+                        <div class="glass-panel rounded-2xl overflow-hidden border border-slate-800 hover:border-emerald-500/50 transition-all duration-300 flex flex-col group shadow-lg shadow-emerald-950/5">
+                            <div class="bg-gradient-to-r from-slate-900 to-slate-800 p-5 border-b border-slate-800 relative">
+                                <span class="absolute top-4 right-4 bg-emerald-500/10 text-emerald-400 text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wider">Mới</span>
+                                <span class="text-xs text-emerald-400 font-bold">GÓI 01</span>
+                                <h4 class="text-lg font-bold text-slate-100 mt-0.5">Gói Đồng (Copper)</h4>
+                            </div>
+                            <div class="p-5 flex-1 flex flex-col justify-between space-y-6">
+                                <div class="space-y-4">
+                                    <div class="flex items-center justify-between pb-3 border-b border-slate-800/60">
+                                        <span class="text-slate-400 text-xs">Vốn đầu tư:</span>
+                                        <span class="text-lg font-extrabold text-transparent bg-gradient-to-r from-white to-amber-200 bg-clip-text">70,000đ</span>
+                                    </div>
+                                    <div class="flex items-center justify-between pb-3 border-b border-slate-800/60">
+                                        <span class="text-slate-400 text-xs">Lợi nhuận mỗi ngày:</span>
+                                        <span class="text-base font-bold text-emerald-400">+18,000đ</span>
+                                    </div>
+                                    <div class="flex items-center justify-between text-xs">
+                                        <span class="text-slate-400">Tỷ suất sinh lời:</span>
+                                        <span class="text-amber-400 font-semibold">25.7% / ngày</span>
+                                    </div>
+                                </div>
+                                <button onclick="buyPackage(70000, 18000, 'Gói Đồng')" class="w-full py-3 px-4 rounded-xl bg-slate-800 group-hover:bg-brand-500 group-hover:text-slate-950 text-slate-200 text-sm font-bold transition-all duration-300 shadow-md">
+                                    Đầu tư ngay 70k
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- PACKAGE 2 -->
+                        <div class="glass-panel rounded-2xl overflow-hidden border border-slate-800 hover:border-emerald-500/50 transition-all duration-300 flex flex-col group shadow-lg shadow-emerald-950/5">
+                            <div class="bg-gradient-to-r from-slate-900 to-slate-800 p-5 border-b border-slate-800 relative">
+                                <span class="absolute top-4 right-4 bg-amber-500/10 text-amber-400 text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wider">Hot</span>
+                                <span class="text-xs text-emerald-400 font-bold">GÓI 02</span>
+                                <h4 class="text-lg font-bold text-slate-100 mt-0.5">Gói Bạc (Silver)</h4>
+                            </div>
+                            <div class="p-5 flex-1 flex flex-col justify-between space-y-6">
+                                <div class="space-y-4">
+                                    <div class="flex items-center justify-between pb-3 border-b border-slate-800/60">
+                                        <span class="text-slate-400 text-xs">Vốn đầu tư:</span>
+                                        <span class="text-lg font-extrabold text-transparent bg-gradient-to-r from-white to-amber-200 bg-clip-text">140,000đ</span>
+                                    </div>
+                                    <div class="flex items-center justify-between pb-3 border-b border-slate-800/60">
+                                        <span class="text-slate-400 text-xs">Lợi nhuận mỗi ngày:</span>
+                                        <span class="text-base font-bold text-emerald-400">+36,000đ</span>
+                                    </div>
+                                    <div class="flex items-center justify-between text-xs">
+                                        <span class="text-slate-400">Tỷ suất sinh lời:</span>
+                                        <span class="text-amber-400 font-semibold">25.7% / ngày</span>
+                                    </div>
+                                </div>
+                                <button onclick="buyPackage(140000, 36000, 'Gói Bạc')" class="w-full py-3 px-4 rounded-xl bg-slate-800 group-hover:bg-brand-500 group-hover:text-slate-950 text-slate-200 text-sm font-bold transition-all duration-300 shadow-md">
+                                    Đầu tư ngay 140k
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- PACKAGE 3 -->
+                        <div class="glass-panel rounded-2xl overflow-hidden border border-slate-800 hover:border-emerald-500/50 transition-all duration-300 flex flex-col group shadow-lg shadow-emerald-950/5">
+                            <div class="bg-gradient-to-r from-slate-900 to-slate-800 p-5 border-b border-slate-800 relative">
+                                <span class="absolute top-4 right-4 bg-emerald-500/15 text-emerald-400 text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wider">Ưu Đãi</span>
+                                <span class="text-xs text-emerald-400 font-bold">GÓI 03</span>
+                                <h4 class="text-lg font-bold text-slate-100 mt-0.5">Gói Vàng (Gold)</h4>
+                            </div>
+                            <div class="p-5 flex-1 flex flex-col justify-between space-y-6">
+                                <div class="space-y-4">
+                                    <div class="flex items-center justify-between pb-3 border-b border-slate-800/60">
+                                        <span class="text-slate-400 text-xs">Vốn đầu tư:</span>
+                                        <span class="text-lg font-extrabold text-transparent bg-gradient-to-r from-white to-amber-200 bg-clip-text">280,000đ</span>
+                                    </div>
+                                    <div class="flex items-center justify-between pb-3 border-b border-slate-800/60">
+                                        <span class="text-slate-400 text-xs">Lợi nhuận mỗi ngày:</span>
+                                        <span class="text-base font-bold text-emerald-400">+72,000đ</span>
+                                    </div>
+                                    <div class="flex items-center justify-between text-xs">
+                                        <span class="text-slate-400">Tỷ suất sinh lời:</span>
+                                        <span class="text-amber-400 font-semibold">25.7% / ngày</span>
+                                    </div>
+                                </div>
+                                <button onclick="buyPackage(280000, 72000, 'Gói Vàng')" class="w-full py-3 px-4 rounded-xl bg-slate-800 group-hover:bg-brand-500 group-hover:text-slate-950 text-slate-200 text-sm font-bold transition-all duration-300 shadow-md">
+                                    Đầu tư ngay 280k
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- PACKAGE 4 -->
+                        <div class="glass-panel rounded-2xl overflow-hidden border border-slate-800 hover:border-emerald-500/50 transition-all duration-300 flex flex-col group shadow-lg shadow-emerald-950/5">
+                            <div class="bg-gradient-to-r from-slate-900 to-slate-800 p-5 border-b border-slate-800 relative">
+                                <span class="absolute top-4 right-4 bg-purple-500/20 text-purple-400 text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wider">VIP</span>
+                                <span class="text-xs text-emerald-400 font-bold">GÓI 04</span>
+                                <h4 class="text-lg font-bold text-slate-100 mt-0.5">Gói Kim Cương (Diamond)</h4>
+                            </div>
+                            <div class="p-5 flex-1 flex flex-col justify-between space-y-6">
+                                <div class="space-y-4">
+                                    <div class="flex items-center justify-between pb-3 border-b border-slate-800/60">
+                                        <span class="text-slate-400 text-xs">Vốn đầu tư:</span>
+                                        <span class="text-lg font-extrabold text-transparent bg-gradient-to-r from-white to-amber-200 bg-clip-text">560,000đ</span>
+                                    </div>
+                                    <div class="flex items-center justify-between pb-3 border-b border-slate-800/60">
+                                        <span class="text-slate-400 text-xs">Lợi nhuận mỗi ngày:</span>
+                                        <span class="text-base font-bold text-emerald-400">+144,000đ</span>
+                                    </div>
+                                    <div class="flex items-center justify-between text-xs">
+                                        <span class="text-slate-400">Tỷ suất sinh lời:</span>
+                                        <span class="text-amber-400 font-semibold">25.7% / ngày</span>
+                                    </div>
+                                </div>
+                                <button onclick="buyPackage(560000, 144000, 'Gói Kim Cương')" class="w-full py-3 px-4 rounded-xl bg-slate-800 group-hover:bg-brand-500 group-hover:text-slate-950 text-slate-200 text-sm font-bold transition-all duration-300 shadow-md">
+                                    Đầu tư ngay 560k
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Investments Log -->
+                <div class="glass-panel rounded-2xl p-6 space-y-4">
+                    <h3 class="text-lg font-bold text-white flex items-center">
+                        <i class="fa-solid fa-folder-open text-emerald-400 mr-2"></i>
+                        Danh Sách Gói Đang Hoạt Động Của Bạn
+                    </h3>
+                    
+                    <div class="overflow-x-auto w-full">
+                        <table class="w-full text-sm text-left text-slate-300">
+                            <thead class="text-xs uppercase bg-slate-950 text-slate-400">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 rounded-l-lg">Tên Gói</th>
+                                    <th scope="col" class="px-6 py-3">Vốn Đầu Tư</th>
+                                    <th scope="col" class="px-6 py-3">Lãi / Ngày</th>
+                                    <th scope="col" class="px-6 py-3">Số Ngày Đã Chạy</th>
+                                    <th scope="col" class="px-6 py-3">Tổng Lãi Thu Được</th>
+                                    <th scope="col" class="px-6 py-3 rounded-r-lg">Ngày Mở Gói</th>
+                                </tr>
+                            </thead>
+                            <tbody id="active-investments-tbody">
+                                <!-- Dynamic rows via JS -->
+                                <tr class="border-b border-slate-800 bg-slate-900/30">
+                                    <td colspan="6" class="px-6 py-8 text-center text-slate-500">
+                                        <i class="fa-solid fa-wallet text-3xl mb-2 block"></i>
+                                        Bạn chưa sở hữu gói đầu tư nào. Hãy kích hoạt ngay một gói để nhận lãi hàng ngày!
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: DEPOSIT -->
+            <section id="tab-deposit" class="tab-content p-4 md:p-8 space-y-6 hidden">
+                <div class="max-w-3xl mx-auto space-y-6">
+                    <div class="text-center md:text-left">
+                        <h2 class="text-2xl font-bold text-white flex items-center justify-center md:justify-start">
+                            <i class="fa-solid fa-wallet text-emerald-400 mr-2.5"></i>Nạp Tiền Vào Vốn Đầu Tư
+                        </h2>
+                        <p class="text-sm text-slate-400 mt-1">Chọn số vốn nạp bên dưới. Mã QR Ngân Hàng tự động tạo khớp thông tin để xử lý nhanh nhất.</p>
+                    </div>
+
+                    <!-- Selected package quick selection -->
+                    <div class="glass-panel rounded-2xl p-6 space-y-6">
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                            <button onclick="setDepositAmount(70000)" class="dep-preset px-4 py-3 rounded-xl border border-slate-800 hover:border-emerald-500/50 hover:bg-emerald-500/5 bg-slate-900 transition-all font-bold text-slate-200" data-amount="70000">70,000đ</button>
+                            <button onclick="setDepositAmount(140000)" class="dep-preset px-4 py-3 rounded-xl border border-slate-800 hover:border-emerald-500/50 hover:bg-emerald-500/5 bg-slate-900 transition-all font-bold text-slate-200" data-amount="140000">140,000đ</button>
+                            <button onclick="setDepositAmount(280000)" class="dep-preset px-4 py-3 rounded-xl border border-slate-800 hover:border-emerald-500/50 hover:bg-emerald-500/5 bg-slate-900 transition-all font-bold text-slate-200" data-amount="280000">280,000đ</button>
+                            <button onclick="setDepositAmount(560000)" class="dep-preset px-4 py-3 rounded-xl border border-slate-800 hover:border-emerald-500/50 hover:bg-emerald-500/5 bg-slate-900 transition-all font-bold text-slate-200" data-amount="560000">560,000đ</button>
+                        </div>
+
+                        <!-- Manual input -->
+                        <div class="space-y-2">
+                            <label class="text-xs text-slate-400 font-semibold block">Hoặc nhập số tiền tùy chọn:</label>
+                            <div class="relative">
+                                <input id="dep-custom-amount" type="number" step="1000" placeholder="Nhập số tiền tối thiểu 10.000đ..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 pl-12 text-slate-100 font-bold focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">đ</span>
+                            </div>
+                        </div>
+
+                        <button onclick="generateDepositQR()" class="w-full py-4 rounded-xl bg-gradient-to-r from-brand-500 to-emerald-400 text-slate-950 hover:from-brand-600 hover:to-emerald-500 font-extrabold text-sm tracking-wide shadow-lg shadow-emerald-500/20 transition duration-300">
+                            XÁC NHẬN VÀ TẠO MÃ QR NẠP TIỀN
+                        </button>
+                    </div>
+
+                    <!-- Generated QR block (Hidden by default, shown upon confirmation) -->
+                    <div id="deposit-qr-container" class="glass-panel rounded-2xl p-6 hidden space-y-6 border border-emerald-500/30">
+                        <div class="text-center">
+                            <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-bold uppercase tracking-wide">Yêu Cầu Đã Được Tạo</span>
+                            <h3 class="text-xl font-bold text-slate-200 mt-2">Quét mã VietQR chuyển khoản nhanh</h3>
+                            <p class="text-xs text-slate-400 mt-1">Đảm bảo chuyển khoản đúng tài khoản và nội dung hiển thị.</p>
+                        </div>
+
+                        <div class="flex flex-col md:flex-row items-center gap-6 justify-center">
+                            <!-- Generated QR image using dynamic VietQR API -->
+                            <div class="p-3 bg-white rounded-2xl shadow-xl border border-slate-700/30 flex flex-col items-center max-w-[240px]">
+                                <img id="vietqr-img" src="" alt="Mã chuyển khoản VietQR" class="w-full h-auto rounded-xl">
+                                <span class="text-[10px] text-slate-500 mt-2 font-semibold">Tự động xử lý qua hệ thống</span>
+                            </div>
+
+                            <!-- Transfer Info details -->
+                            <div class="flex-1 space-y-4 w-full">
+                                <div class="grid grid-cols-2 gap-4 bg-slate-950 p-4 rounded-xl border border-slate-800 text-xs">
+                                    <div>
+                                        <p class="text-slate-500">Ngân hàng thụ hưởng</p>
+                                        <p id="qr-bank-name" class="font-bold text-slate-200 text-sm mt-1">-</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-slate-500">Tên người nhận</p>
+                                        <p id="qr-account-name" class="font-bold text-slate-200 text-sm mt-1">-</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-slate-500">Số tài khoản nhận</p>
+                                        <p id="qr-account-no" class="font-bold text-emerald-400 text-sm mt-1">-</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-slate-500">Nội dung chuyển khoản</p>
+                                        <p id="qr-transfer-content" class="font-bold text-amber-400 text-sm mt-1">-</p>
+                                    </div>
+                                </div>
+
+                                <div class="p-4 bg-amber-500/10 border border-amber-500/20 text-amber-400 rounded-xl text-xs space-y-1">
+                                    <p class="font-bold"><i class="fa-solid fa-triangle-exclamation mr-1.5"></i>Lưu ý quan trọng:</p>
+                                    <p>1. Vui lòng chuyển khoản đúng số tiền đăng ký nạp.</p>
+                                    <p>2. Chụp ảnh biên lai giao dịch thành công để gửi xác minh bên dưới.</p>
+                                </div>
+
+                                <div class="space-y-3">
+                                    <label class="text-xs text-slate-400 font-semibold block">Tải biên lai chuyển tiền thành công:</label>
+                                    <div class="flex items-center space-x-3">
+                                        <input type="file" id="dep-receipt-file" accept="image/*" class="hidden" onchange="handleReceiptUpload(event)">
+                                        <button onclick="document.getElementById('dep-receipt-file').click()" class="px-4 py-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs font-bold transition">
+                                            Chọn hình ảnh biên lai
+                                        </button>
+                                        <span id="dep-receipt-status" class="text-xs text-slate-400 italic">Chưa chọn ảnh</span>
+                                    </div>
+                                </div>
+
+                                <button onclick="submitDepositReceipt()" class="w-full py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-sm shadow-md transition">
+                                    Xác nhận tôi đã chuyển khoản
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: WITHDRAW -->
+            <section id="tab-withdraw" class="tab-content p-4 md:p-8 space-y-6 hidden">
+                <div class="max-w-3xl mx-auto space-y-6">
+                    <div class="text-center md:text-left">
+                        <h2 class="text-2xl font-bold text-white flex items-center justify-center md:justify-start">
+                            <i class="fa-solid fa-money-bill-transfer text-emerald-400 mr-2.5"></i>Yêu Cầu Rút Vốn & Lãi
+                        </h2>
+                        <p class="text-sm text-slate-400 mt-1">Tiền sẽ được admin phê duyệt và chuyển thẳng vào thẻ ngân hàng của bạn trong 5 - 15 phút.</p>
+                    </div>
+
+                    <!-- Withdrawal Conditions Alert Card -->
+                    <div class="glass-panel rounded-2xl p-5 border border-amber-500/20 bg-amber-950/15 text-slate-300 text-xs space-y-3">
+                        <p class="font-bold text-amber-400 flex items-center text-sm">
+                            <i class="fa-solid fa-shield-halved mr-2"></i>Quy định rút tiền hệ thống:
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2 text-slate-300">
+                            <div class="flex items-start space-x-2">
+                                <span class="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 flex-shrink-0"></span>
+                                <p><strong>Quà tặng 25k đăng ký:</strong> Không thể dùng để đầu tư, nhưng có thể rút kèm lợi nhuận tự do.</p>
+                            </div>
+                            <div class="flex items-start space-x-2">
+                                <span class="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 flex-shrink-0"></span>
+                                <p><strong>Hạn mức rút tối thiểu:</strong> Rút tối thiểu <span class="text-amber-400 font-bold">25,000đ</span>.</p>
+                            </div>
+                            <div class="flex items-start space-x-2">
+                                <span class="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 flex-shrink-0"></span>
+                                <p><strong>Điều kiện bắt buộc:</strong> Phải đầu tư và duy trì ít nhất <span class="text-emerald-400 font-bold">1 gói đầu tư active</span> mới có thể thực hiện lệnh rút tiền.</p>
+                            </div>
+                            <div class="flex items-start space-x-2">
+                                <span class="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 flex-shrink-0"></span>
+                                <p><strong>Số lượng gói hiện tại của bạn:</strong> <span id="withdraw-current-packages" class="text-amber-400 font-extrabold text-sm">0 gói</span>.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Withdrawal form panel -->
+                    <div class="glass-panel rounded-2xl p-6 space-y-5">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+                                <span class="text-xs text-slate-500 block">Số dư hiện tại của bạn</span>
+                                <span id="withdraw-balance-label" class="text-2xl font-bold text-emerald-400">25,000đ</span>
+                            </div>
+                            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+                                <span class="text-xs text-slate-500 block">Trạng thái điều kiện rút</span>
+                                <span id="withdraw-status-badge" class="text-xs px-2.5 py-1 rounded bg-rose-500/10 text-rose-400 font-bold inline-block mt-1">Chưa đủ điều kiện</span>
+                            </div>
+                        </div>
+
+                        <!-- Withdrawal details -->
+                        <div class="space-y-4">
+                            <div class="space-y-1.5">
+                                <label class="text-xs text-slate-400 font-semibold block">Số tiền muốn rút:</label>
+                                <div class="relative">
+                                    <input id="with-amount" type="number" step="1000" placeholder="Nhập số tiền muốn rút..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-slate-100 font-bold focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm">VND</span>
+                                </div>
+                            </div>
+
+                            <!-- Link to update bank if not set -->
+                            <div id="withdraw-bank-warning" class="p-4 bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-xl text-xs flex items-center justify-between">
+                                <span>Bạn chưa liên kết ngân hàng nhận tiền.</span>
+                                <button onclick="switchTab('profile')" class="px-3 py-1.5 rounded-lg bg-rose-500 text-slate-950 font-bold text-xs">Cài Đặt Ngay</button>
+                            </div>
+
+                            <div id="withdraw-bank-success" class="p-4 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-xl text-xs space-y-1 hidden">
+                                <p class="font-bold"><i class="fa-solid fa-circle-check mr-1"></i>Ngân hàng liên kết:</p>
+                                <p id="with-bank-info-label" class="text-slate-300">TECHCOMBANK - 1903***552 - NGUYEN VAN A</p>
+                            </div>
+                        </div>
+
+                        <button onclick="requestWithdrawal()" class="w-full py-4 rounded-xl bg-gradient-to-r from-brand-500 to-emerald-400 text-slate-950 hover:from-brand-600 hover:to-emerald-500 font-extrabold text-sm tracking-wide transition duration-300 shadow-md">
+                            GỬI LỆNH RÚT TIỀN VỀ NGÂN HÀNG
+                        </button>
+                    </div>
+
+                    <!-- Withdrawals History Log -->
+                    <div class="glass-panel rounded-2xl p-6 space-y-4">
+                        <h3 class="text-lg font-bold text-white flex items-center">
+                            <i class="fa-solid fa-history text-emerald-400 mr-2"></i>
+                            Lịch Sử Rút Tiền Gần Đây
+                        </h3>
+                        
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm text-left text-slate-300">
+                                <thead class="text-xs uppercase bg-slate-950 text-slate-400">
+                                    <tr>
+                                        <th class="px-6 py-3 rounded-l-lg">Thời Gian</th>
+                                        <th class="px-6 py-3">Số Tiền</th>
+                                        <th class="px-6 py-3">Ngân Hàng Nhận</th>
+                                        <th class="px-6 py-3 rounded-r-lg">Trạng Thái</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="withdrawals-tbody">
+                                    <tr class="border-b border-slate-800 bg-slate-900/30">
+                                        <td colspan="4" class="px-6 py-4 text-center text-slate-500">
+                                            Chưa có giao dịch rút tiền nào.
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 4: REFERRAL SYSTEM -->
+            <section id="tab-referral" class="tab-content p-4 md:p-8 space-y-6 hidden">
+                <div class="max-w-4xl mx-auto space-y-6">
+                    <div class="text-center md:text-left">
+                        <h2 class="text-2xl font-bold text-white flex items-center justify-center md:justify-start">
+                            <i class="fa-solid fa-users text-emerald-400 mr-2.5"></i>Chương Trình Tiếp Thị Liên Kết 3 Tầng
+                        </h2>
+                        <p class="text-sm text-slate-400 mt-1">Giới thiệu bạn bè đầu tư nhận ngay mức chiết khấu cực khủng trực tiếp vào số dư rút tiền mặt.</p>
+                    </div>
+
+                    <!-- Percent indicators cards -->
+                    <div class="grid grid-cols-3 gap-4 text-center">
+                        <div class="glass-panel rounded-2xl p-4 border border-emerald-500/20">
+                            <span class="text-xs text-slate-400 block uppercase font-bold tracking-wider">Tầng 1 (F1)</span>
+                            <span class="text-3xl font-extrabold text-transparent bg-gradient-to-r from-emerald-400 to-green-500 bg-clip-text">20%</span>
+                            <p class="text-[10px] text-slate-500 mt-1">Khi F1 đầu tư gói mới</p>
+                        </div>
+                        <div class="glass-panel rounded-2xl p-4 border border-amber-500/20">
+                            <span class="text-xs text-slate-400 block uppercase font-bold tracking-wider">Tầng 2 (F2)</span>
+                            <span class="text-3xl font-extrabold text-transparent bg-gradient-to-r from-amber-400 to-gold-500 bg-clip-text">3%</span>
+                            <p class="text-[10px] text-slate-500 mt-1">Khi F2 đầu tư gói mới</p>
+                        </div>
+                        <div class="glass-panel rounded-2xl p-4 border border-purple-500/20">
+                            <span class="text-xs text-slate-400 block uppercase font-bold tracking-wider">Tầng 3 (F3)</span>
+                            <span class="text-3xl font-extrabold text-transparent bg-gradient-to-r from-purple-400 to-indigo-500 bg-clip-text">1%</span>
+                            <p class="text-[10px] text-slate-500 mt-1">Khi F2 mời tiếp F3</p>
+                        </div>
+                    </div>
+
+                    <!-- Custom Referral link component -->
+                    <div class="glass-panel rounded-2xl p-6 space-y-4">
+                        <h3 class="text-lg font-bold text-white">Liên Kết Giới Thiệu Của Bạn</h3>
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <input id="ref-link-input" type="text" readonly value="https://sojectmoney.io/register.html?ref=0968123456" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-slate-300 font-medium text-xs sm:text-sm focus:outline-none">
+                            <button onclick="copyRefLink()" class="px-5 py-3 rounded-xl bg-brand-500 hover:bg-brand-600 text-slate-950 font-bold text-sm flex items-center justify-center space-x-2 transition flex-shrink-0">
+                                <i class="fa-solid fa-copy"></i><span>Sao Chép</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Referral Simulation & Stats Block -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Stats sub-card -->
+                        <div class="glass-panel rounded-2xl p-5 space-y-4 col-span-1">
+                            <h4 class="text-sm font-bold text-slate-200">Thống Kê Nhóm</h4>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                                    <span class="text-xs text-slate-400">Thành viên F1:</span>
+                                    <span id="ref-f1-count" class="font-bold text-emerald-400">0 người</span>
+                                </div>
+                                <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                                    <span class="text-xs text-slate-400">Thành viên F2:</span>
+                                    <span id="ref-f2-count" class="font-bold text-amber-400">0 người</span>
+                                </div>
+                                <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                                    <span class="text-xs text-slate-400">Thành viên F3:</span>
+                                    <span id="ref-f3-count" class="font-bold text-purple-400">0 người</span>
+                                </div>
+                                <div class="flex items-center justify-between pt-1">
+                                    <span class="text-xs text-slate-400 font-bold">Tổng hoa hồng nhận:</span>
+                                    <span id="ref-total-earned" class="font-extrabold text-amber-400">0đ</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Interactive Referee simulator to help user test the multi-tier ref flow -->
+                        <div class="glass-panel rounded-2xl p-5 space-y-4 col-span-1 md:col-span-2 border border-slate-800 hover:border-slate-700 transition">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-sm font-bold text-amber-400">Bộ Thử Nghiệm Hoa Hồng Tuyến Dưới (Demo)</h4>
+                                <span class="text-[10px] bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded font-semibold">Tự động cộng tiền</span>
+                            </div>
+                            <p class="text-xs text-slate-400">Tạo tài khoản ảo cấp dưới mua gói đầu tư bất kỳ để thấy dòng tiền nhảy hoa hồng tự động về số dư chính:</p>
+                            
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="space-y-1">
+                                    <label class="text-[10px] text-slate-500 font-bold uppercase">Cấp Tuyến Dưới</label>
+                                    <select id="sim-ref-level" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-300 focus:outline-none">
+                                        <option value="F1">F1 (Nhận 20% hoa hồng)</option>
+                                        <option value="F2">F2 (Nhận 3% hoa hồng)</option>
+                                        <option value="F3">F3 (Nhận 1% hoa hồng)</option>
+                                    </select>
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="text-[10px] text-slate-500 font-bold uppercase">Gói Đầu Tư</label>
+                                    <select id="sim-ref-package" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-300 focus:outline-none">
+                                        <option value="70000">Gói Đồng - Vốn 70k (Nhận 14k/2.1k/700đ)</option>
+                                        <option value="140000">Gói Bạc - Vốn 140k (Nhận 28k/4.2k/1.4k)</option>
+                                        <option value="280000">Gói Vàng - Vốn 280k (Nhận 56k/8.4k/2.8k)</option>
+                                        <option value="560000">Gói Kim Cương - Vốn 560k (Nhận 112k/16.8k/5.6k)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <button onclick="simulateRefereePurchase()" class="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition flex items-center justify-center space-x-1.5">
+                                <i class="fa-solid fa-play"></i><span>Kích Hoạt Cho Ref Mua Gói Thử</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Affiliate System description -->
+                    <div class="glass-panel rounded-2xl p-6 text-xs text-slate-400 space-y-3 bg-slate-900/40">
+                        <p class="font-bold text-slate-200 text-sm">Công thức tính hoa hồng ví dụ:</p>
+                        <p>🔹 Khi bạn mời <strong>F1</strong> mua Gói Kim Cương (<span class="text-emerald-400 font-bold">560,000đ</span>): Bạn nhận ngay <span class="text-amber-400 font-bold">112,000đ</span> (20%).</p>
+                        <p>🔹 <strong>F1</strong> mời tiếp <strong>F2</strong> mua Gói Kim Cương (<span class="text-emerald-400 font-bold">560,000đ</span>): Bạn nhận ngay <span class="text-amber-400 font-bold">16,800đ</span> (3%).</p>
+                        <p>🔹 <strong>F2</strong> mời tiếp <strong>F3</strong> mua Gói Kim Cương (<span class="text-emerald-400 font-bold">560,000đ</span>): Bạn nhận ngay <span class="text-amber-400 font-bold">5,600đ</span> (1%).</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 5: PROFILE & BANK CONNECTION -->
+            <section id="tab-profile" class="tab-content p-4 md:p-8 space-y-6 hidden">
+                <div class="max-w-2xl mx-auto space-y-6">
+                    <div class="text-center md:text-left">
+                        <h2 class="text-2xl font-bold text-white flex items-center justify-center md:justify-start">
+                            <i class="fa-solid fa-id-card text-emerald-400 mr-2.5"></i>Liên Kết Ngân Hàng Nhận Tiền
+                        </h2>
+                        <p class="text-sm text-slate-400 mt-1">Điền thông tin tài khoản ngân hàng chính xác để thực hiện rút tiền mặt về thẻ của bạn.</p>
+                    </div>
+
+                    <div class="glass-panel rounded-2xl p-6 space-y-5">
+                        <div class="space-y-4">
+                            <!-- Select Bank Brand -->
+                            <div class="space-y-1.5">
+                                <label class="text-xs text-slate-400 font-semibold block">Tên Ngân hàng:</label>
+                                <select id="user-bank-name" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-slate-200 font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                                    <option value="">-- Chọn ngân hàng thụ hưởng --</option>
+                                    <option value="Vietcombank">Vietcombank (VCB)</option>
+                                    <option value="Techcombank">Techcombank (TCB)</option>
+                                    <option value="MBBank">MBBank (Ngân hàng Quân Đội)</option>
+                                    <option value="VietinBank">VietinBank</option>
+                                    <option value="BIDV">BIDV</option>
+                                    <option value="ACB">ACB</option>
+                                    <option value="Sacombank">Sacombank</option>
+                                    <option value="VPBank">VPBank</option>
+                                    <option value="TPBank">TPBank</option>
+                                </select>
+                            </div>
+
+                            <!-- Account No -->
+                            <div class="space-y-1.5">
+                                <label class="text-xs text-slate-400 font-semibold block">Số tài khoản:</label>
+                                <input id="user-bank-no" type="text" placeholder="Nhập số tài khoản ngân hàng của bạn..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-slate-100 font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                            </div>
+
+                            <!-- Holder name -->
+                            <div class="space-y-1.5">
+                                <label class="text-xs text-slate-400 font-semibold block">Tên chủ tài khoản (Viết hoa không dấu):</label>
+                                <input id="user-bank-holder" type="text" placeholder="Ví dụ: NGUYEN VAN A" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-slate-100 font-extrabold uppercase focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                            </div>
+                        </div>
+
+                        <button onclick="saveUserBankInfo()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-slate-950 font-bold text-sm shadow-md transition duration-300">
+                            LƯU THÔNG TIN LIÊN KẾT NGÂN HÀNG
+                        </button>
+                    </div>
+
+                    <!-- Info card -->
+                    <div class="p-4 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-xl text-xs flex items-start space-x-3">
+                        <i class="fa-solid fa-lock text-base mt-0.5"></i>
+                        <div>
+                            <p class="font-bold">Bảo mật thông tin tối đa</p>
+                            <p class="text-slate-400 mt-0.5">Thông tin tài khoản của bạn được mã hóa hoàn toàn và chỉ dùng để chuyển tiền khi bạn thực hiện rút vốn hoặc rút lãi.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Sticky Bottom Nav for Mobile -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-slate-900 border-t border-slate-800 px-2 py-1 flex justify-around items-center z-40">
+        <button onclick="switchTab('dashboard')" class="tab-btn-mobile flex flex-col items-center py-2 px-3 text-emerald-400" data-tab="dashboard">
+            <i class="fa-solid fa-chart-line text-lg"></i>
+            <span class="text-[10px] mt-1 font-semibold">Trang Chủ</span>
+        </button>
+        <button onclick="switchTab('deposit')" class="tab-btn-mobile flex flex-col items-center py-2 px-3 text-slate-400" data-tab="deposit">
+            <i class="fa-solid fa-wallet text-lg"></i>
+            <span class="text-[10px] mt-1 font-semibold">Nạp Tiền</span>
+        </button>
+        <button onclick="switchTab('withdraw')" class="tab-btn-mobile flex flex-col items-center py-2 px-3 text-slate-400" data-tab="withdraw">
+            <i class="fa-solid fa-money-bill-transfer text-lg"></i>
+            <span class="text-[10px] mt-1 font-semibold">Rút Tiền</span>
+        </button>
+        <button onclick="switchTab('referral')" class="tab-btn-mobile flex flex-col items-center py-2 px-3 text-slate-400" data-tab="referral">
+            <i class="fa-solid fa-users text-lg"></i>
+            <span class="text-[10px] mt-1 font-semibold">Mời Bạn</span>
+        </button>
+        <button onclick="switchTab('profile')" class="tab-btn-mobile flex flex-col items-center py-2 px-3 text-slate-400" data-tab="profile">
+            <i class="fa-solid fa-id-card text-lg"></i>
+            <span class="text-[10px] mt-1 font-semibold">Tài Khoản</span>
+        </button>
+    </div>
+
+    <!-- CUSTOM MODAL COMPONENT (Replaces window.alert for premium feels) -->
+    <div id="custom-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl animate-[zoomIn_0.2s_ease-out]">
+            <div id="modal-icon-container" class="w-14 h-14 rounded-full mx-auto flex items-center justify-center text-2xl">
+                <!-- icon dynamically set -->
+            </div>
+            <h4 id="modal-title" class="text-lg font-bold text-white">Tiêu đề thông báo</h4>
+            <p id="modal-desc" class="text-sm text-slate-400">Nội dung chi tiết thông báo.</p>
+            <button onclick="closeModal()" class="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-bold border border-slate-700/60 transition">
+                Đóng thông báo
+            </button>
+        </div>
+    </div>
+
+    <style>
+        @keyframes zoomIn {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+
+    <!-- ADMIN PANEL OVERLAY SECTION (Toggled via the shield button) -->
+    <div id="admin-panel" class="fixed inset-0 bg-slate-950/95 z-50 overflow-y-auto hidden flex flex-col">
+        <!-- Admin header -->
+        <header class="bg-slate-900 border-b border-slate-800 px-6 py-4 flex items-center justify-between sticky top-0">
+            <div class="flex items-center space-x-2.5">
+                <div class="w-9 h-9 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-500">
+                    <i class="fa-solid fa-user-shield text-lg animate-bounce"></i>
+                </div>
+                <div>
+                    <h2 class="text-lg font-extrabold text-transparent bg-gradient-to-r from-amber-400 to-yellow-200 bg-clip-text">QUẢN TRỊ VIÊN SYSTEM</h2>
+                    <p class="text-[10px] text-slate-400 uppercase font-semibold">Tài khoản Admin chính thức</p>
+                </div>
+            </div>
+            <button onclick="toggleAdminPanel()" class="px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition">
+                Quay về Client
+            </button>
+        </header>
+
+        <!-- Admin Content container -->
+        <main class="flex-1 p-4 md:p-8 space-y-8 max-w-5xl mx-auto w-full">
+            
+            <!-- SECTION 1: BANK DETAILS FOR USER DEPOSITS (Admin QR Code configuration) -->
+            <section class="glass-panel rounded-2xl p-6 space-y-4 border border-amber-500/20">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-qrcode text-amber-400 text-lg"></i>
+                    <h3 class="text-base font-bold text-slate-200">Cấu Hình Tài Khoản Ngân Hàng Nhận Tiền (Tạo VietQR)</h3>
+                </div>
+                <p class="text-xs text-slate-400">Khi Admin thay đổi thông tin này, hệ thống sẽ tự động đổi mã QR và số tài khoản hiển thị trên phần "Nạp Tiền" của người đầu tư.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="space-y-1.5">
+                        <label class="text-xs text-slate-400 font-semibold block">Mã Ngân hàng (Để làm VietQR):</label>
+                        <select id="admin-bank-code" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-300">
+                            <option value="mbbank">MBBank</option>
+                            <option value="vietcombank">Vietcombank</option>
+                            <option value="techcombank">Techcombank</option>
+                            <option value="acb">ACB</option>
+                            <option value="bidv">BIDV</option>
+                            <option value="vietinbank">Vietinbank</option>
+                        </select>
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-xs text-slate-400 font-semibold block">Số tài khoản nhận tiền:</label>
+                        <input id="admin-bank-no" type="text" value="09876543210" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-300 font-bold">
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-xs text-slate-400 font-semibold block">Tên chủ tài khoản nhận (VIẾT HOA):</label>
+                        <input id="admin-bank-name" type="text" value="HOANG MINH LONG" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-300 font-extrabold uppercase">
+                    </div>
+                </div>
+
+                <div class="flex justify-end pt-2">
+                    <button onclick="saveAdminBankSettings()" class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold transition shadow-lg shadow-amber-500/10">
+                        Cập nhật tài khoản Admin
+                    </button>
+                </div>
+            </section>
+
+            <!-- SECTION 2: DEPOSIT APPROVAL -->
+            <section class="glass-panel rounded-2xl p-6 space-y-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-circle-arrow-down text-emerald-400 text-lg"></i>
+                        <h3 class="text-base font-bold text-slate-200">Duyệt Yêu Cầu Nạp Tiền</h3>
+                    </div>
+                    <span id="admin-deposit-badge" class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-bold">0 Đang Chờ</span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left text-slate-300">
+                        <thead class="text-xs uppercase bg-slate-950 text-slate-400">
+                            <tr>
+                                <th class="px-4 py-2.5 rounded-l-lg">SĐT Thành Viên</th>
+                                <th class="px-4 py-2.5">Số Tiền Nạp</th>
+                                <th class="px-4 py-2.5">Ảnh Biên Lai</th>
+                                <th class="px-4 py-2.5">Thời Gian Gửi</th>
+                                <th class="px-4 py-2.5 rounded-r-lg text-right">Thao Tác Duyệt</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-deposits-tbody">
+                            <!-- Populated dynamically -->
+                            <tr>
+                                <td colspan="5" class="px-4 py-6 text-center text-slate-500 text-xs">Không có yêu cầu nạp tiền nào đang chờ duyệt.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SECTION 3: WITHDRAWAL APPROVAL -->
+            <section class="glass-panel rounded-2xl p-6 space-y-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-circle-arrow-up text-rose-400 text-lg"></i>
+                        <h3 class="text-base font-bold text-slate-200">Duyệt Lệnh Rút Tiền</h3>
+                    </div>
+                    <span id="admin-withdraw-badge" class="px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-400 text-xs font-bold">0 Đang Chờ</span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left text-slate-300">
+                        <thead class="text-xs uppercase bg-slate-950 text-slate-400">
+                            <tr>
+                                <th class="px-4 py-2.5 rounded-l-lg">SĐT Thành Viên</th>
+                                <th class="px-4 py-2.5">Số Tiền Rút</th>
+                                <th class="px-4 py-2.5">Chi Tiết Ngân Hàng</th>
+                                <th class="px-4 py-2.5">Thời Gian Gửi</th>
+                                <th class="px-4 py-2.5 rounded-r-lg text-right">Thao Tác Duyệt</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-withdraws-tbody">
+                            <!-- Populated dynamically -->
+                            <tr>
+                                <td colspan="5" class="px-4 py-6 text-center text-slate-500 text-xs">Không có lệnh rút tiền nào đang chờ duyệt.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SECTION 4: MEMBERS MANAGEMENT -->
+            <section class="glass-panel rounded-2xl p-6 space-y-4">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-user-group text-blue-400 text-lg"></i>
+                    <h3 class="text-base font-bold text-slate-200">Danh Sách & Quản Lý Số Dư Thành Viên</h3>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left text-slate-300">
+                        <thead class="text-xs uppercase bg-slate-950 text-slate-400">
+                            <tr>
+                                <th class="px-4 py-2.5 rounded-l-lg">SĐT</th>
+                                <th class="px-4 py-2.5">Số Dư Hiện Tại</th>
+                                <th class="px-4 py-2.5">Số Gói Đang Đầu Tư</th>
+                                <th class="px-4 py-2.5">Ngân Hàng</th>
+                                <th class="px-4 py-2.5 rounded-r-lg text-right">Điều Chỉnh Số Dư</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-users-tbody">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // LocalStorage database configuration
+        const APP_STATE_KEY = "sojectmoney_app_state";
+
+        // Structured user template creator
+        function createNewUserObject(phone, password) {
+            return {
+                phone: phone,
+                password: password,
+                mainBalance: 25000, // Instant 25k signup gift
+                promoBalance: 25000,
+                investedBalance: 0,
+                earnedBalance: 0,
+                activePackages: [],
+                bank: {
+                    name: "",
+                    accountNo: "",
+                    holder: ""
+                },
+                withdrawals: [],
+                deposits: [],
+                referrals: {
+                    f1: [],
+                    f2: [],
+                    f3: [],
+                    totalEarned: 0
+                }
+            };
+        }
+
+        // Initial Seed setup matching default requests
+        const DEFAULT_STATE = {
+            isLoggedIn: false,
+            currentUser: null, // Holds active user object when logged in
+            adminSettings: {
+                bankCode: "vietcombank",
+                accountNo: "1018898989",
+                accountName: "HOANG MINH LONG",
+                depositList: [],
+                withdrawalList: []
+            },
+            allUsers: [
+                {
+                    phone: "0968123456",
+                    password: "123",
+                    mainBalance: 25000,
+                    promoBalance: 25000,
+                    investedBalance: 0,
+                    earnedBalance: 0,
+                    activePackages: [],
+                    bank: { name: "", accountNo: "", holder: "" },
+                    withdrawals: [],
+                    deposits: [],
+                    referrals: { f1: [], f2: [], f3: [], totalEarned: 0 }
+                }
+            ]
+        };
+
+        let state = JSON.parse(localStorage.getItem(APP_STATE_KEY)) || DEFAULT_STATE;
+
+        // Sync structure validity
+        if (state.isLoggedIn === undefined) state.isLoggedIn = false;
+        if (!state.allUsers) state.allUsers = DEFAULT_STATE.allUsers;
+        if (!state.adminSettings) state.adminSettings = DEFAULT_STATE.adminSettings;
+
+        // Save State back to persistence container
+        function saveState() {
+            // Important: Synchronize the logged-in current user back to global users database
+            if (state.isLoggedIn && state.currentUser) {
+                const uIdx = state.allUsers.findIndex(u => u.phone === state.currentUser.phone);
+                if (uIdx !== -1) {
+                    state.allUsers[uIdx] = state.currentUser;
+                } else {
+                    state.allUsers.push(state.currentUser);
+                }
+            }
+            localStorage.setItem(APP_STATE_KEY, JSON.stringify(state));
+            updateUI();
+        }
+
+        // Helpers
+        function formatMoney(amount) {
+            return amount.toLocaleString('vi-VN') + "đ";
+        }
+
+        // Auth Screen Modes Swapper
+        function toggleAuthMode(mode) {
+            const tabLogin = document.getElementById('auth-tab-login');
+            const tabReg = document.getElementById('auth-tab-register');
+            const formLogin = document.getElementById('form-login');
+            const formReg = document.getElementById('form-register');
+
+            if (mode === 'login') {
+                tabLogin.className = "flex-1 py-2.5 rounded-lg text-xs font-bold transition bg-emerald-500 text-slate-950";
+                tabReg.className = "flex-1 py-2.5 rounded-lg text-xs font-bold transition text-slate-400";
+                formLogin.classList.remove('hidden');
+                formReg.classList.add('hidden');
+            } else {
+                tabReg.className = "flex-1 py-2.5 rounded-lg text-xs font-bold transition bg-emerald-500 text-slate-950";
+                tabLogin.className = "flex-1 py-2.5 rounded-lg text-xs font-bold transition text-slate-400";
+                formLogin.classList.add('hidden');
+                formReg.classList.remove('hidden');
+            }
+        }
+
+        // Login Processing
+        function handleLogin(event) {
+            event.preventDefault();
+            const phone = document.getElementById('login-phone').value.trim();
+            const pass = document.getElementById('login-pass').value;
+
+            // Search credentials
+            const foundUser = state.allUsers.find(u => u.phone === phone && u.password === pass);
+
+            if (foundUser) {
+                state.isLoggedIn = true;
+                state.currentUser = foundUser;
+                saveState();
+                showModal("Chào mừng trở lại!", "Đăng nhập tài khoản thành công.", "success");
+            } else {
+                showModal("Lỗi đăng nhập", "Số điện thoại hoặc mật khẩu không chính xác. Mời thử lại hoặc dùng thử: SĐT: 0968123456 - Mật khẩu: 123", "error");
+            }
+        }
+
+        // Register Processing
+        function handleRegister(event) {
+            event.preventDefault();
+            const phone = document.getElementById('reg-phone').value.trim();
+            const pass = document.getElementById('reg-pass').value;
+            const passConfirm = document.getElementById('reg-pass-confirm').value;
+            const refCode = document.getElementById('reg-ref-code').value.trim();
+
+            // Guard validation
+            if (phone.length < 9) {
+                showModal("Số điện thoại không hợp lệ", "Vui lòng kiểm tra lại số điện thoại.", "error");
+                return;
+            }
+            if (pass.length < 3) {
+                showModal("Mật khẩu quá ngắn", "Mật khẩu bảo vệ của bạn phải chứa ít nhất 3 ký tự.", "error");
+                return;
+            }
+            if (pass !== passConfirm) {
+                showModal("Mật khẩu không khớp", "Mật khẩu xác nhận không giống với mật khẩu đã nhập.", "error");
+                return;
+            }
+
+            // Look up duplication
+            const alreadyExists = state.allUsers.find(u => u.phone === phone);
+            if (alreadyExists) {
+                showModal("Tài khoản đã tồn tại", "Số điện thoại này đã đăng ký hệ thống rồi.", "error");
+                return;
+            }
+
+            // Create new instance
+            const newUser = createNewUserObject(phone, pass);
+
+            // Handle actual Ref link inside database
+            if (refCode) {
+                const referrer = state.allUsers.find(u => u.phone === refCode);
+                if (referrer) {
+                    if (!referrer.referrals) referrer.referrals = { f1: [], f2: [], f3: [], totalEarned: 0 };
+                    referrer.referrals.f1.push(phone);
+                    // Also notify inside admin logic or trace down
+                }
+            }
+
+            state.allUsers.push(newUser);
+            state.isLoggedIn = true;
+            state.currentUser = newUser;
+            
+            saveState();
+
+            showModal(
+                "Đăng Ký Thành Công!", 
+                "Chúc mừng bạn đã tạo tài khoản sojectmoney thành công. Nhận quà tặng 25,000đ được cộng vào số dư ví của bạn!", 
+                "success"
+            );
+        }
+
+        // Log out clean session
+        function handleLogout() {
+            if (state.isLoggedIn) {
+                // Force sync first
+                const uIdx = state.allUsers.findIndex(u => u.phone === state.currentUser.phone);
+                if (uIdx !== -1) {
+                    state.allUsers[uIdx] = state.currentUser;
+                }
+                
+                state.isLoggedIn = false;
+                state.currentUser = null;
+                saveState();
+                showModal("Đã Đăng Xuất", "Bạn đã đăng xuất an toàn khỏi tài khoản của mình.", "info");
+            }
+        }
+
+        function updateUI() {
+            // Switch overall screens base on status
+            const authContainer = document.getElementById('auth-container');
+            const mainAppContainer = document.getElementById('main-app-container');
+
+            if (state.isLoggedIn && state.currentUser) {
+                authContainer.classList.add('hidden');
+                mainAppContainer.classList.remove('hidden');
+            } else {
+                authContainer.classList.remove('hidden');
+                mainAppContainer.classList.add('hidden');
+                return; // halt view updates for unlogged session
+            }
+
+            // Update User Stats top level labels
+            document.getElementById("nav-user-phone").innerText = state.currentUser.phone;
+            document.getElementById("nav-main-balance").innerText = formatMoney(state.currentUser.mainBalance);
+            document.getElementById("nav-active-count").innerText = state.currentUser.activePackages.length + " gói";
+
+            document.getElementById("stat-main-balance").innerText = state.currentUser.mainBalance.toLocaleString('vi-VN');
+            document.getElementById("stat-promo-balance").innerText = state.currentUser.promoBalance.toLocaleString('vi-VN');
+            document.getElementById("stat-invested-balance").innerText = state.currentUser.investedBalance.toLocaleString('vi-VN');
+            document.getElementById("stat-earned-balance").innerText = state.currentUser.earnedBalance.toLocaleString('vi-VN');
+
+            // Synchronize on the withdraw tab
+            document.getElementById("withdraw-balance-label").innerText = formatMoney(state.currentUser.mainBalance);
+            document.getElementById("withdraw-current-packages").innerText = state.currentUser.activePackages.length + " gói";
+            
+            const withdrawStatusBadge = document.getElementById("withdraw-status-badge");
+            if (state.currentUser.activePackages.length > 0) {
+                withdrawStatusBadge.className = "text-xs px-2.5 py-1 rounded bg-emerald-500/10 text-emerald-400 font-bold inline-block mt-1";
+                withdrawStatusBadge.innerText = "Đủ điều kiện rút";
+            } else {
+                withdrawStatusBadge.className = "text-xs px-2.5 py-1 rounded bg-rose-500/10 text-rose-400 font-bold inline-block mt-1";
+                withdrawStatusBadge.innerText = "Cần có ít nhất 1 gói đầu tư";
+            }
+
+            // Sync user linked bank details inside withdraw page
+            const bankWarning = document.getElementById("withdraw-bank-warning");
+            const bankSuccess = document.getElementById("withdraw-bank-success");
+            const withBankInfoLabel = document.getElementById("with-bank-info-label");
+
+            if (state.currentUser.bank && state.currentUser.bank.name) {
+                bankWarning.classList.add("hidden");
+                bankSuccess.classList.remove("hidden");
+                withBankInfoLabel.innerText = `${state.currentUser.bank.name.toUpperCase()} - ${state.currentUser.bank.accountNo} - ${state.currentUser.bank.holder.toUpperCase()}`;
+            } else {
+                bankWarning.classList.remove("hidden");
+                bankSuccess.classList.add("hidden");
+            }
+
+            // Render Referral Stats
+            const refObj = state.currentUser.referrals || {f1:[], f2:[], f3:[], totalEarned:0};
+            document.getElementById("ref-f1-count").innerText = refObj.f1.length + " người";
+            document.getElementById("ref-f2-count").innerText = refObj.f2.length + " người";
+            document.getElementById("ref-f3-count").innerText = refObj.f3.length + " người";
+            document.getElementById("ref-total-earned").innerText = formatMoney(refObj.totalEarned);
+
+            // Ref Invitation Link pre-generator matching phone
+            const refLinkInput = document.getElementById("ref-link-input");
+            if (refLinkInput) {
+                refLinkInput.value = window.location.origin + window.location.pathname + `?ref=${state.currentUser.phone}`;
+            }
+
+            // Populate Active Investments Table
+            const activeTbody = document.getElementById("active-investments-tbody");
+            if (state.currentUser.activePackages.length === 0) {
+                activeTbody.innerHTML = `
+                    <tr class="border-b border-slate-800 bg-slate-900/30">
+                        <td colspan="6" class="px-6 py-8 text-center text-slate-500">
+                            <i class="fa-solid fa-wallet text-3xl mb-2 block"></i>
+                            Bạn chưa sở hữu gói đầu tư nào. Hãy kích hoạt ngay một gói để nhận lãi hàng ngày!
+                        </td>
+                    </tr>
+                `;
+            } else {
+                activeTbody.innerHTML = state.currentUser.activePackages.map(pkg => `
+                    <tr class="border-b border-slate-800 hover:bg-slate-800/40 transition">
+                        <td class="px-6 py-4 font-bold text-slate-100">${pkg.name}</td>
+                        <td class="px-6 py-4 font-semibold text-emerald-400">${formatMoney(pkg.capital)}</td>
+                        <td class="px-6 py-4 text-emerald-400 font-bold">+${formatMoney(pkg.dailyProfit)}</td>
+                        <td class="px-6 py-4 text-amber-400 font-bold">${pkg.daysActive} ngày</td>
+                        <td class="px-6 py-4 text-emerald-300 font-bold">${formatMoney(pkg.daysActive * pkg.dailyProfit)}</td>
+                        <td class="px-6 py-4 text-slate-400 text-xs">${pkg.dateKichHoat}</td>
+                    </tr>
+                `).join('');
+            }
+
+            // Populate User Withdrawals history log
+            const withdrawalsTbody = document.getElementById("withdrawals-tbody");
+            if (state.currentUser.withdrawals.length === 0) {
+                withdrawalsTbody.innerHTML = `
+                    <tr class="border-b border-slate-800 bg-slate-900/30">
+                        <td colspan="4" class="px-6 py-4 text-center text-slate-500">
+                            Chưa có giao dịch rút tiền nào.
+                        </td>
+                    </tr>
+                `;
+            } else {
+                withdrawalsTbody.innerHTML = state.currentUser.withdrawals.map(w => `
+                    <tr class="border-b border-slate-800 hover:bg-slate-800/30 transition text-xs">
+                        <td class="px-6 py-3 text-slate-400">${w.date}</td>
+                        <td class="px-6 py-3 font-bold text-slate-100">${formatMoney(w.amount)}</td>
+                        <td class="px-6 py-3 text-slate-300">${w.bank}</td>
+                        <td class="px-6 py-3">
+                            ${w.status === 'Đang xử lý' 
+                                ? `<span class="px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 font-bold">Đang xử lý</span>` 
+                                : `<span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-bold">Đã thanh toán</span>`}
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            // Sync Admin Badges & tables
+            document.getElementById("admin-deposit-badge").innerText = state.adminSettings.depositList.filter(d => d.status === 'Đang chờ').length + " Đang Chờ";
+            document.getElementById("admin-withdraw-badge").innerText = state.adminSettings.withdrawalList.filter(w => w.status === 'Đang chờ').length + " Đang Chờ";
+
+            renderAdminDeposits();
+            renderAdminWithdrawals();
+            renderAdminUsers();
+        }
+
+        // Navigation Switcher Tab logic
+        function switchTab(tabId) {
+            // Hide all tab components
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+            
+            // Show requested tab
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+
+            // Reset navigation links colors (Desktop)
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn w-full px-4 py-3 rounded-xl flex items-center space-x-3 text-sm font-semibold transition-all text-slate-400 hover:bg-slate-800/50 hover:text-slate-100";
+                if (btn.getAttribute('data-tab') === tabId) {
+                    btn.classList.add('bg-slate-800', 'text-emerald-400');
+                    btn.classList.remove('text-slate-400');
+                }
+            });
+
+            // Reset mobile navigation icons
+            document.querySelectorAll('.tab-btn-mobile').forEach(btn => {
+                btn.className = "tab-btn-mobile flex flex-col items-center py-2 px-3 text-slate-400";
+                if (btn.getAttribute('data-tab') === tabId) {
+                    btn.classList.add('text-emerald-400');
+                    btn.classList.remove('text-slate-400');
+                }
+            });
+        }
+
+        // Custom modal component trigger
+        function showModal(title, text, type = 'success') {
+            const modal = document.getElementById('custom-modal');
+            const iconContainer = document.getElementById('modal-icon-container');
+            const titleEl = document.getElementById('modal-title');
+            const descEl = document.getElementById('modal-desc');
+
+            titleEl.innerText = title;
+            descEl.innerText = text;
+
+            if (type === 'success') {
+                iconContainer.className = "w-14 h-14 rounded-full mx-auto flex items-center justify-center text-2xl bg-emerald-500/10 text-emerald-400";
+                iconContainer.innerHTML = `<i class="fa-solid fa-circle-check"></i>`;
+            } else if (type === 'error') {
+                iconContainer.className = "w-14 h-14 rounded-full mx-auto flex items-center justify-center text-2xl bg-rose-500/10 text-rose-400";
+                iconContainer.innerHTML = `<i class="fa-solid fa-circle-xmark"></i>`;
+            } else {
+                iconContainer.className = "w-14 h-14 rounded-full mx-auto flex items-center justify-center text-2xl bg-amber-500/10 text-amber-400";
+                iconContainer.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i>`;
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('custom-modal').classList.add('hidden');
+        }
+
+        // Invest / Buy Package Logic
+        function buyPackage(cost, daily, name) {
+            if (state.currentUser.mainBalance < cost) {
+                showModal(
+                    "Không đủ số dư", 
+                    `Bạn cần tối thiểu ${formatMoney(cost)} để tham gia đầu tư ${name}. Hãy nạp thêm vốn!`, 
+                    "error"
+                );
+                switchTab('deposit');
+                setDepositAmount(cost);
+                return;
+            }
+
+            // Deduct from balance and add active package
+            state.currentUser.mainBalance -= cost;
+            state.currentUser.investedBalance += cost;
+
+            const today = new Date().toLocaleDateString('vi-VN', {hour: '2-digit', minute:'2-digit'});
+            state.currentUser.activePackages.push({
+                id: "pkg-" + Date.now(),
+                name: name,
+                capital: cost,
+                dailyProfit: daily,
+                daysActive: 0,
+                dateKichHoat: today
+            });
+
+            // Update user in simulated database list
+            const index = state.allUsers.findIndex(u => u.phone === state.currentUser.phone);
+            if (index !== -1) {
+                state.allUsers[index].mainBalance = state.currentUser.mainBalance;
+                state.allUsers[index].packageCount = state.currentUser.activePackages.length;
+            }
+
+            saveState();
+            showModal(
+                "Đầu Tư Thành Công!", 
+                `Chúc mừng bạn đã sở hữu ${name}! Gói sẽ bắt đầu tạo dòng tiền lãi +${formatMoney(daily)} hàng ngày.`, 
+                "success"
+            );
+        }
+
+        // Deposit Section Actions
+        let tempReceiptImage = null;
+
+        function setDepositAmount(amount) {
+            document.getElementById("dep-custom-amount").value = amount;
+            document.querySelectorAll(".dep-preset").forEach(btn => {
+                if (btn.getAttribute('data-amount') == amount) {
+                    btn.classList.add("border-emerald-500", "bg-emerald-500/10", "text-emerald-400");
+                } else {
+                    btn.classList.remove("border-emerald-500", "bg-emerald-500/10", "text-emerald-400");
+                }
+            });
+        }
+
+        function generateDepositQR() {
+            const customAmount = parseFloat(document.getElementById("dep-custom-amount").value);
+            if (isNaN(customAmount) || customAmount < 10000) {
+                showModal("Lỗi nạp tiền", "Số tiền nạp tối thiểu là 10,000đ.", "error");
+                return;
+            }
+
+            // Generate customized VietQR URL dynamic
+            const bankCode = state.adminSettings.bankCode;
+            const accountNo = state.adminSettings.accountNo;
+            const accountName = encodeURIComponent(state.adminSettings.accountName);
+            const content = "SOJECT" + state.currentUser.phone.replace(/[^0-9]/g, ""); // Dynamic code based on user phone
+
+            // Build official standard img.vietqr.io API call string
+            const vietQRUrl = `https://img.vietqr.io/image/${bankCode}-${accountNo}-compact2.png?amount=${customAmount}&addInfo=${encodeURIComponent(content)}&accountName=${accountName}`;
+
+            document.getElementById("vietqr-img").src = vietQRUrl;
+            document.getElementById("qr-bank-name").innerText = bankCode.toUpperCase();
+            document.getElementById("qr-account-no").innerText = accountNo;
+            document.getElementById("qr-account-name").innerText = state.adminSettings.accountName;
+            document.getElementById("qr-transfer-content").innerText = content;
+
+            document.getElementById("deposit-qr-container").classList.remove("hidden");
+            
+            // Scroll layout to QR block
+            document.getElementById("deposit-qr-container").scrollIntoView({behavior: 'smooth'});
+        }
+
+        function handleReceiptUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    tempReceiptImage = e.target.result; // Base64 of image
+                    document.getElementById("dep-receipt-status").innerText = "Đã chọn: " + file.name;
+                    document.getElementById("dep-receipt-status").className = "text-xs text-emerald-400 font-bold";
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function submitDepositReceipt() {
+            const customAmount = parseFloat(document.getElementById("dep-custom-amount").value);
+            const content = "SOJECT" + state.currentUser.phone.replace(/[^0-9]/g, "");
+
+            if (!tempReceiptImage) {
+                showModal("Thiếu thông tin", "Vui lòng đính kèm ảnh chụp màn hình biên lai chuyển tiền để Admin xác thực nhanh chóng.", "warning");
+                return;
+            }
+
+            const newDepositRequest = {
+                id: "dep-" + Date.now(),
+                phone: state.currentUser.phone,
+                amount: customAmount,
+                receipt: tempReceiptImage,
+                date: new Date().toLocaleDateString('vi-VN', {hour: '2-digit', minute:'2-digit'}),
+                status: "Đang chờ"
+            };
+
+            state.adminSettings.depositList.push(newDepositRequest);
+            saveState();
+
+            showModal(
+                "Đã Gửi Xác Nhận", 
+                "Lệnh nạp tiền đã được gửi tới hệ thống Admin duyệt. Vui lòng chờ 5 - 10 phút để số tiền được cộng vào tài khoản của bạn.", 
+                "success"
+            );
+
+            // Clean state variables
+            tempReceiptImage = null;
+            document.getElementById("dep-receipt-status").innerText = "Chưa chọn ảnh";
+            document.getElementById("dep-receipt-status").className = "text-xs text-slate-400 italic";
+            document.getElementById("deposit-qr-container").classList.add("hidden");
+        }
+
+        // Withdraw Section Logic
+        function requestWithdrawal() {
+            // Check withdrawal conditions
+            if (state.currentUser.activePackages.length === 0) {
+                showModal(
+                    "Không đủ điều kiện", 
+                    "Bạn bắt buộc phải sở hữu ít nhất 1 gói đầu tư đang hoạt động mới được rút tiền mặt.", 
+                    "error"
+                );
+                return;
+            }
+
+            if (!state.currentUser.bank.name || !state.currentUser.bank.accountNo) {
+                showModal(
+                    "Thiếu ngân hàng", 
+                    "Bạn vui lòng cập nhật thông tin ngân hàng thụ hưởng tại tab 'Tài Khoản' để rút tiền.", 
+                    "warning"
+                );
+                switchTab('profile');
+                return;
+            }
+
+            const amount = parseFloat(document.getElementById("with-amount").value);
+            if (isNaN(amount) || amount < 25000) {
+                showModal("Lỗi hạn mức", "Số tiền rút tối thiểu cho mỗi giao dịch là 25,000đ.", "error");
+                return;
+            }
+
+            if (state.currentUser.mainBalance < amount) {
+                showModal("Số dư không đủ", "Số tiền yêu cầu rút vượt quá số dư hiện tại của bạn.", "error");
+                return;
+            }
+
+            // Deduct temporarily or pending state inside balance
+            state.currentUser.mainBalance -= amount;
+
+            const newWithdrawal = {
+                id: "wit-" + Date.now(),
+                phone: state.currentUser.phone,
+                amount: amount,
+                bank: `${state.currentUser.bank.name} (${state.currentUser.bank.accountNo})`,
+                date: new Date().toLocaleDateString('vi-VN', {hour: '2-digit', minute:'2-digit'}),
+                status: "Đang chờ"
+            };
+
+            state.adminSettings.withdrawalList.push(newWithdrawal);
+            state.currentUser.withdrawals.unshift({
+                id: newWithdrawal.id,
+                amount: amount,
+                bank: state.currentUser.bank.name,
+                date: newWithdrawal.date,
+                status: "Đang xử lý"
+            });
+
+            // Update user in simulated database
+            const index = state.allUsers.findIndex(u => u.phone === state.currentUser.phone);
+            if (index !== -1) {
+                state.allUsers[index].mainBalance = state.currentUser.mainBalance;
+            }
+
+            saveState();
+            showModal(
+                "Yêu Cầu Rút Tiền Đã Gửi", 
+                "Admin đang xử lý chuyển tiền qua tài khoản ngân hàng liên kết của bạn. Thời gian nhận tiền dự kiến 5 - 15 phút.", 
+                "success"
+            );
+            document.getElementById("with-amount").value = "";
+        }
+
+        // Bank connections Settings update
+        function saveUserBankInfo() {
+            const bName = document.getElementById("user-bank-name").value;
+            const bNo = document.getElementById("user-bank-no").value.trim();
+            const bHolder = document.getElementById("user-bank-holder").value.trim().toUpperCase();
+
+            if (!bName || !bNo || !bHolder) {
+                showModal("Lỗi nhập liệu", "Vui lòng nhập đầy đủ toàn bộ 3 thông tin tài khoản ngân hàng.", "error");
+                return;
+            }
+
+            state.currentUser.bank = {
+                name: bName,
+                accountNo: bNo,
+                holder: bHolder
+            };
+
+            // Sync user in virtual DB
+            const index = state.allUsers.findIndex(u => u.phone === state.currentUser.phone);
+            if (index !== -1) {
+                state.allUsers[index].bank = bName;
+            }
+
+            saveState();
+            showModal("Liên Kết Thành Công!", "Đã cập nhật hệ thống ngân hàng rút tiền mặt thành công.", "success");
+            switchTab('withdraw');
+        }
+
+        // Copy Referral Link
+        function copyRefLink() {
+            const input = document.getElementById("ref-link-input");
+            input.select();
+            document.execCommand('copy');
+            showModal("Đã Sao Chép!", "Đã copy liên kết mời của bạn. Hãy gửi cho bạn bè để nhận hoa hồng 3 tầng!", "success");
+        }
+
+        // Simulate Multi-Tier Referral actions
+        function simulateRefereePurchase() {
+            const level = document.getElementById("sim-ref-level").value; // F1, F2 or F3
+            const packagePrice = parseFloat(document.getElementById("sim-ref-package").value);
+            
+            let commissionPercent = 0;
+            let commissionAmount = 0;
+
+            if (!state.currentUser.referrals) {
+                state.currentUser.referrals = { f1: [], f2: [], f3: [], totalEarned: 0 };
+            }
+
+            if (level === "F1") {
+                commissionPercent = 20;
+                commissionAmount = (packagePrice * 20) / 100;
+                state.currentUser.referrals.f1.push(`09${Math.floor(Math.random() * 900 + 100)}***${Math.floor(Math.random() * 900 + 100)}`);
+            } else if (level === "F2") {
+                commissionPercent = 3;
+                commissionAmount = (packagePrice * 3) / 100;
+                state.currentUser.referrals.f2.push(`03${Math.floor(Math.random() * 900 + 100)}***${Math.floor(Math.random() * 900 + 100)}`);
+            } else {
+                commissionPercent = 1;
+                commissionAmount = (packagePrice * 1) / 100;
+                state.currentUser.referrals.f3.push(`07${Math.floor(Math.random() * 900 + 100)}***${Math.floor(Math.random() * 900 + 100)}`);
+            }
+
+            // Pay the affiliate bonus to the user's balance directly
+            state.currentUser.mainBalance += commissionAmount;
+            state.currentUser.referrals.totalEarned += commissionAmount;
+
+            saveState();
+            showModal(
+                "Nhận Hoa Hồng Mới!", 
+                `Tuyến dưới của bạn ở tầng [${level}] vừa mua gói đầu tư trị giá ${formatMoney(packagePrice)}. Hệ thống đã cộng thêm +${formatMoney(commissionAmount)} (${commissionPercent}%) vào ví chính của bạn!`, 
+                "success"
+            );
+        }
+
+        // Simulate a Day Pass (Adds profit to user packages instantly)
+        function simulateDayPassed() {
+            if (state.currentUser.activePackages.length === 0) {
+                showModal(
+                    "Không có gói hoạt động", 
+                    "Bạn chưa có bất kỳ gói đầu tư nào để tạo doanh thu. Hãy kích hoạt ngay một gói và thử lại nhé!", 
+                    "warning"
+                );
+                return;
+            }
+
+            let dailyProfitSum = 0;
+            state.currentUser.activePackages.forEach(pkg => {
+                pkg.daysActive += 1;
+                dailyProfitSum += pkg.dailyProfit;
+            });
+
+            // Update user balance statistics
+            state.currentUser.mainBalance += dailyProfitSum;
+            state.currentUser.earnedBalance += dailyProfitSum;
+
+            saveState();
+            showModal(
+                "Tua Nhanh 24 Giờ", 
+                `Một ngày đã trôi qua thành công! Tổng lợi nhuận từ các gói đầu tư của bạn là +${formatMoney(dailyProfitSum)} đã được cộng vào số dư của bạn.`, 
+                "success"
+            );
+        }
+
+        // Toggle Admin view overlay
+        function toggleAdminPanel() {
+            const adminPanel = document.getElementById("admin-panel");
+            if (adminPanel.classList.contains("hidden")) {
+                adminPanel.classList.remove("hidden");
+                // Sync data inside admin forms
+                document.getElementById("admin-bank-code").value = state.adminSettings.bankCode;
+                document.getElementById("admin-bank-no").value = state.adminSettings.accountNo;
+                document.getElementById("admin-bank-name").value = state.adminSettings.accountName;
+                updateUI();
+            } else {
+                adminPanel.classList.add("hidden");
+            }
+        }
+
+        // Admin Save Bank Information Settings
+        function saveAdminBankSettings() {
+            const bCode = document.getElementById("admin-bank-code").value;
+            const bNo = document.getElementById("admin-bank-no").value.trim();
+            const bName = document.getElementById("admin-bank-name").value.trim().toUpperCase();
+
+            if (!bNo || !bName) {
+                showModal("Thiếu thông tin", "Số tài khoản và Tên chủ tài khoản nhận của Admin không được rỗng.", "error", "admin");
+                return;
+            }
+
+            state.adminSettings.bankCode = bCode;
+            state.adminSettings.accountNo = bNo;
+            state.adminSettings.accountName = bName;
+
+            saveState();
+            showModal("Cập Nhật Thành Công!", "Đã cập nhật hệ thống thông tin tài khoản ngân hàng nhận tiền nạp của Admin.", "success");
+        }
+
+        // Admin render function for deposit lists
+        function renderAdminDeposits() {
+            const tbody = document.getElementById("admin-deposits-tbody");
+            const pendingList = state.adminSettings.depositList.filter(d => d.status === "Đang chờ");
+
+            if (pendingList.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="px-4 py-8 text-center text-slate-500 text-xs">Không có yêu cầu nạp tiền nào đang chờ duyệt.</td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = pendingList.map(dep => `
+                <tr class="border-b border-slate-800 text-xs">
+                    <td class="px-4 py-3 font-bold text-slate-100">${dep.phone}</td>
+                    <td class="px-4 py-3 font-semibold text-emerald-400">${formatMoney(dep.amount)}</td>
+                    <td class="px-4 py-3">
+                        <button onclick="previewReceipt('${dep.receipt}')" class="px-2 py-1 bg-slate-800 text-amber-400 hover:bg-slate-700 rounded font-semibold text-[10px]">Xem Biên Lai</button>
+                    </td>
+                    <td class="px-4 py-3 text-slate-400">${dep.date}</td>
+                    <td class="px-4 py-3 text-right space-x-2">
+                        <button onclick="approveDeposit('${dep.id}', '${dep.phone}', ${dep.amount})" class="px-2.5 py-1 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold rounded">Duyệt</button>
+                        <button onclick="rejectDeposit('${dep.id}')" class="px-2.5 py-1 bg-rose-500 hover:bg-rose-600 text-slate-100 font-bold rounded">Hủy</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function previewReceipt(base64Image) {
+            const win = window.open();
+            win.document.write(`<iframe src="${base64Image}" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>`);
+        }
+
+        function approveDeposit(depId, targetPhone, amount) {
+            const deposit = state.adminSettings.depositList.find(d => d.id === depId);
+            if (deposit) {
+                deposit.status = "Thành công";
+
+                // Add to user balance directly in allUsers DB
+                const userIndex = state.allUsers.findIndex(u => u.phone === targetPhone);
+                if (userIndex !== -1) {
+                    state.allUsers[userIndex].mainBalance += amount;
+                    // If target is currently logged-in user, live sync it immediately
+                    if (state.isLoggedIn && state.currentUser && state.currentUser.phone === targetPhone) {
+                        state.currentUser.mainBalance += amount;
+                    }
+                }
+
+                saveState();
+                showModal("Phê Duyệt Thành Công", `Số tiền ${formatMoney(amount)} đã được nạp thành công vào tài khoản ${targetPhone}.`, "success");
+            }
+        }
+
+        function rejectDeposit(depId) {
+            state.adminSettings.depositList = state.adminSettings.depositList.filter(d => d.id !== depId);
+            saveState();
+            showModal("Đã Từ Chối", "Đã từ chối và xóa bỏ yêu cầu nạp tiền này thành công.", "success");
+        }
+
+        function renderAdminWithdrawals() {
+            const tbody = document.getElementById("admin-withdraws-tbody");
+            const pendingList = state.adminSettings.withdrawalList.filter(w => w.status === "Đang chờ");
+
+            if (pendingList.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="px-4 py-8 text-center text-slate-500 text-xs">Không có lệnh rút tiền nào đang chờ duyệt.</td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = pendingList.map(wit => `
+                <tr class="border-b border-slate-800 text-xs">
+                    <td class="px-4 py-3 font-bold text-slate-100">${wit.phone}</td>
+                    <td class="px-4 py-3 font-semibold text-rose-400">${formatMoney(wit.amount)}</td>
+                    <td class="px-4 py-3 text-slate-300 font-medium">${wit.bank}</td>
+                    <td class="px-4 py-3 text-slate-400">${wit.date}</td>
+                    <td class="px-4 py-3 text-right space-x-2">
+                        <button onclick="approveWithdrawal('${wit.id}', '${wit.phone}')" class="px-2.5 py-1 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold rounded">Duyệt Đã Chuyển</button>
+                        <button onclick="rejectWithdrawal('${wit.id}', '${wit.phone}')" class="px-2.5 py-1 bg-rose-500 hover:bg-rose-600 text-slate-100 font-bold rounded">Hủy Bỏ</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function approveWithdrawal(witId, targetPhone) {
+            const adminWit = state.adminSettings.withdrawalList.find(w => w.id === witId);
+            if (adminWit) {
+                adminWit.status = "Thành công";
+
+                // Sync inside target user's records
+                const targetUser = state.allUsers.find(u => u.phone === targetPhone);
+                if (targetUser) {
+                    if (!targetUser.withdrawals) targetUser.withdrawals = [];
+                    const userWit = targetUser.withdrawals.find(w => w.id === witId);
+                    if (userWit) userWit.status = "Thành công";
+                }
+
+                // If currently logged-in user is target, sync state instantly
+                if (state.isLoggedIn && state.currentUser && state.currentUser.phone === targetPhone) {
+                    const userWit = state.currentUser.withdrawals.find(w => w.id === witId);
+                    if (userWit) userWit.status = "Thành công";
+                }
+
+                saveState();
+                showModal("Đã Duyệt Đã Chuyển", `Lệnh rút tiền trị giá ${formatMoney(adminWit.amount)} đã được duyệt chi hoàn thành khoản thành công.`, "success");
+            }
+        }
+
+        function rejectWithdrawal(witId, targetPhone) {
+            const adminWit = state.adminSettings.withdrawalList.find(w => w.id === witId);
+            if (adminWit) {
+                // Refund money to user's mainBalance
+                const targetUser = state.allUsers.find(u => u.phone === targetPhone);
+                if (targetUser) {
+                    targetUser.mainBalance += adminWit.amount;
+                    targetUser.withdrawals = targetUser.withdrawals.filter(w => w.id !== witId);
+                }
+
+                // Live Sync logged-in state if identical
+                if (state.isLoggedIn && state.currentUser && state.currentUser.phone === targetPhone) {
+                    state.currentUser.mainBalance += adminWit.amount;
+                    state.currentUser.withdrawals = state.currentUser.withdrawals.filter(w => w.id !== witId);
+                }
+
+                // Remove from admin pending lists
+                state.adminSettings.withdrawalList = state.adminSettings.withdrawalList.filter(w => w.id !== witId);
+
+                saveState();
+                showModal("Lệnh Bị Hủy", "Đã hủy bỏ lệnh rút tiền và hoàn trả số dư nguyên vẹn lại cho thành viên.", "error");
+            }
+        }
+
+        // Admin render function for manage users
+        function renderAdminUsers() {
+            const tbody = document.getElementById("admin-users-tbody");
+            tbody.innerHTML = state.allUsers.map(user => `
+                <tr class="border-b border-slate-800 text-xs">
+                    <td class="px-4 py-3 font-bold text-slate-100">${user.phone}</td>
+                    <td class="px-4 py-3 font-semibold text-emerald-400">${formatMoney(user.mainBalance)}</td>
+                    <td class="px-4 py-3 font-bold text-amber-400">${(user.activePackages || []).length} gói</td>
+                    <td class="px-4 py-3 text-slate-400">${user.bank?.name || "Chưa cài đặt"}</td>
+                    <td class="px-4 py-3 text-right">
+                        <button onclick="editUserBalancePrompt('${user.phone}')" class="px-2 py-1 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-amber-400 font-semibold text-[10px]">Sửa số dư</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function editUserBalancePrompt(phone) {
+            const userObj = state.allUsers.find(u => u.phone === phone);
+            if (!userObj) return;
+
+            const amountInput = prompt(`Nhập số dư chính mới cho tài khoản ${phone}:`, userObj.mainBalance);
+            if (amountInput !== null) {
+                const newAmount = parseFloat(amountInput);
+                if (!isNaN(newAmount)) {
+                    userObj.mainBalance = newAmount;
+
+                    // If editing currently logged-in user, live sync it immediately
+                    if (state.isLoggedIn && state.currentUser && state.currentUser.phone === phone) {
+                        state.currentUser.mainBalance = newAmount;
+                    }
+
+                    saveState();
+                    showModal("Thay Đổi Số Dư", `Số dư mới của thành viên ${phone} đã được đặt lại thành ${formatMoney(newAmount)}`, "success");
+                }
+            }
+        }
+
+        // Initialize state inside window load triggers
+        window.onload = function () {
+            // Check if there is an active ref in URL and populate input automatically
+            const urlParams = new URLSearchParams(window.location.search);
+            const refParam = urlParams.get('ref');
+            if (refParam) {
+                toggleAuthMode('register');
+                const refInput = document.getElementById('reg-ref-code');
+                if (refInput) {
+                    refInput.value = refParam;
+                }
+            }
+
+            updateUI();
+        }
+    </script>
+</body>
+</html>
